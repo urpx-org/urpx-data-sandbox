@@ -21,6 +21,7 @@ import tempfile
 
 import requests
 from pyshacl import validate
+from rdflib.term import _toPythonMapping
 
 from urpx_version import release_version
 
@@ -116,6 +117,10 @@ def main(argv: list[str]) -> int:
             )
             continue
 
+        # owlrl's RDFS inference replaces rdflib's process-wide literal
+        # converters with its own, whose gMonth converter rejects valid "--06",
+        # so every later submission would fail on it. Restore them each time.
+        converters = dict(_toPythonMapping)
         try:
             conforms, _, report_text = validate(
                 str(submission),
@@ -129,6 +134,9 @@ def main(argv: list[str]) -> int:
         except Exception as error:  # report and continue to the next submission
             failures.append(f"{submission}: could not be validated: {error}")
             continue
+        finally:
+            _toPythonMapping.clear()
+            _toPythonMapping.update(converters)
 
         if conforms:
             print(f"{submission}: conforms to v{version}")
