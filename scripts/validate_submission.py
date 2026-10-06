@@ -22,6 +22,8 @@ import tempfile
 import requests
 from pyshacl import validate
 
+from urpx_version import release_version
+
 RELEASE_REPO = "urpx-org/urpx"
 GITHUB_API = f"https://api.github.com/repos/{RELEASE_REPO}/releases/tags"
 
@@ -92,9 +94,14 @@ def main(argv: list[str]) -> int:
         return 0
 
     for submission in submissions:
-        version = declared_version(submission)
-        if not version:
+        declared = declared_version(submission)
+        if not declared:
             failures.append(f"{submission}: does not declare targetURPXVersion")
+            continue
+        try:
+            version = release_version(declared)
+        except ValueError as error:
+            failures.append(f"{submission}: {error}")
             continue
 
         try:

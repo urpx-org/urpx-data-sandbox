@@ -20,6 +20,8 @@ import sys
 
 from rdflib import Graph
 
+from urpx_version import release_version
+
 URPX = "https://urpx.org/ns/ontology/"
 
 CLASS_COUNT_QUERY = """
@@ -99,7 +101,7 @@ def summarize(submission_dir: pathlib.Path, root: pathlib.Path) -> dict[str, str
     dates = next(iter(graph.query(EFFECTIVE_DATE_QUERY)))
     has_external_reference = bool(next(iter(graph.query(EXTERNAL_REFERENCE_QUERY))))
     version_rows = list(graph.query(VERSION_QUERY))
-    version = str(version_rows[0].version) if version_rows else ""
+    version = release_version(str(version_rows[0].version)) if version_rows else ""
 
     return {
         "submission_path": str(relative),
