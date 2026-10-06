@@ -94,7 +94,11 @@ def main(argv: list[str]) -> int:
         return 0
 
     for submission in submissions:
-        declared = declared_version(submission)
+        try:
+            declared = declared_version(submission)
+        except (OSError, ValueError) as error:  # unreadable, or not JSON
+            failures.append(f"{submission}: could not be read: {error}")
+            continue
         if not declared:
             failures.append(f"{submission}: does not declare targetURPXVersion")
             continue
@@ -112,15 +116,19 @@ def main(argv: list[str]) -> int:
             )
             continue
 
-        conforms, _, report_text = validate(
-            str(submission),
-            shacl_graph=str(shacl_path),
-            ont_graph=str(ontology_path),
-            data_graph_format="json-ld",
-            shacl_graph_format="turtle",
-            ont_graph_format="turtle",
-            inference="rdfs",
-        )
+        try:
+            conforms, _, report_text = validate(
+                str(submission),
+                shacl_graph=str(shacl_path),
+                ont_graph=str(ontology_path),
+                data_graph_format="json-ld",
+                shacl_graph_format="turtle",
+                ont_graph_format="turtle",
+                inference="rdfs",
+            )
+        except Exception as error:  # report and continue to the next submission
+            failures.append(f"{submission}: could not be validated: {error}")
+            continue
 
         if conforms:
             print(f"{submission}: conforms to v{version}")
