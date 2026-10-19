@@ -1,0 +1,120 @@
+{
+  "@context": [
+    "https://urpx.org/ns/context/releases/v0.5.1/jsonld/urpx-context.jsonld",
+    {
+      "ex": "https://example.org/urpx-sandbox/"
+    }
+  ],
+  "@graph": [
+    {
+      "@type": "urpx:URPXPackage",
+      "@id": "ex:doc-example-rate-2026-01-01",
+      "urpx:targetURPXVersion": "https://github.com/urpx-org/urpx/raw/v0.5.1/ontology/urpx-ontology.ttl",
+      "urpx:hasRatePlan": {
+        "@type": "urpx:RatePlan",
+        "@id": "ex:example-rate",
+        "urpx:ratePlanUniqueIdentifier": "EXAMPLE-1",
+        "urpx:name": "Example Residential Service",
+        "urpx:initialEffectiveDate": "2026-01-01",
+        "urpx:timezoneIdentifier": "America/Los_Angeles",
+        "urpx:offeredBy": {
+          "@id": "ex:utility"
+        }
+      }
+    },
+    {
+      "@type": "urpx:RatePlanVersion",
+      "@id": "ex:example-rate-2026-01-01",
+      "urpx:forRatePlan": {
+        "@id": "ex:example-rate"
+      },
+      "urpx:offeredBy": {
+        "@type": "urpx:UtilityOperator",
+        "@id": "ex:utility",
+        "urpx:legalName": "Example Utility Company",
+        "urpx:organizationType": {
+          "@id": "urpx:utilityOrganization"
+        }
+      },
+      "urpx:effectiveDateTime": "2026-01-01T00:00:00",
+      "urpx:changeReason": {
+        "@id": "urpx:rateCase"
+      },
+      "urpx:serviceRole": {
+        "@id": "urpx:bundledServiceRole"
+      },
+      "urpx:priceCurrency": "USD",
+      "urpx:commodity": {
+        "@id": "urpx:electricity"
+      },
+      "urpx:hasCoverageClaim": {
+        "@type": "urpx:CoverageClaim",
+        "@id": "ex:cc-example-rate-2026-01-01",
+        "urpx:completenessResult": {
+          "@id": "urpx:complete"
+        },
+        "urpx:selfContained": true
+      },
+      "urpx:hasPlanElements": {
+        "@type": "urpx:PlanElements",
+        "urpx:hasMetricInput": [
+          {
+            "@type": "urpx:MetricInput",
+            "@id": "ex:mi-energy",
+            "urpx:name": "kWh Energy Consumption",
+            "urpx:metricInputType": {
+              "@id": "urpx:measuredMetricInput"
+            }
+          }
+        ],
+        "urpx:hasBillingModel": {
+          "@type": "urpx:BillingModel",
+          "urpx:hasLedger": [
+            {
+              "@type": "urpx:Ledger",
+              "@id": "ex:ledger-energy",
+              "urpx:name": "Energy Charges",
+              "urpx:ledgerType": {
+                "@id": "urpx:bundledLedger"
+              },
+              "urpx:referencesMetricInput": {
+                "@id": "ex:mi-energy"
+              }
+            }
+          ],
+          "urpx:hasPriceDefinition": [
+            {
+              "@type": "urpx:PriceDefinition",
+              "@id": "ex:pd-energy",
+              "urpx:name": "Energy Charge",
+              "urpx:chargeType": {
+                "@id": "urpx:usageCharge"
+              },
+              "urpx:billPortion": {
+                "@id": "urpx:bundledPortion"
+              },
+              "urpx:referencesLedger": {
+                "@id": "ex:ledger-energy"
+              }
+            }
+          ]
+        }
+      },
+      "urpx:hasPrices": {
+        "@type": "urpx:Prices",
+        "urpx:hasPrice": [
+          {
+            "@type": "urpx:Price",
+            "@id": "ex:price-energy",
+            "urpx:referencesPriceDefinition": {
+              "@id": "ex:pd-energy"
+            },
+            "urpx:startDate": "2026-01-01",
+            "urpx:name": "Energy Charge",
+            "urpx:unitPrice": "0.25000"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+Placeholder for the vendored source document.
+
+Replace this file with the published source document your dataset is built from, for example the tariff PDF or rate schedule as issued by the utility or regulator, keeping its original filename and capture date. Keep it in this assets/ directory beside the data/ directory, as the PG&E E-ELEC worked example does (submissions/pge-e-elec/).
+
+A vendored source document is a public record of a regulatory process, not part of your licensed contribution, so it is marked LicenseRef-PublicRecord in REUSE.toml. See LICENSES/LicenseRef-PublicRecord.txt. You do not add a .license file beside it unless you need to record a specific issuer as the copyright holder.
