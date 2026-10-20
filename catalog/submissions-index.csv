@@ -1,1 +1,2 @@
 storage_path,utility,jurisdiction,commodity,rate_plans,service_class,urpx_version,rate_plan_count,rate_plan_version_count,pricing_model_count,price_definition_count,price_count,effective_date_start,effective_date_end,has_external_price_reference,date_added
+submissions/pge-e-elec,Pacific Gas & Electric Company,,electricity,E-ELEC (Residential Time-of-Use (Electric Home) Service),,0.5.1,1,1,0,27,27,2022-12-01,2026-01-01,no,2026-10-20
