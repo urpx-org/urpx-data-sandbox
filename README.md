@@ -39,13 +39,37 @@ submissions/
 
 You do not encode a country, state, utility, or commodity in the path. Those facts — and the rate plans, service class, effective dates, and URPX version — are read from the metadata in the submitted documents. The [catalog index](catalog/README.md) derives each submission's facets from that metadata, and the browsing hierarchy (utility, commodity, rate plan, version) emerges from them. Keep one submission per directory, and give each schedule you want listed on its own a directory of its own.
 
-See [`submissions/README.md`](submissions/README.md) and the template at [`submissions/_template/`](submissions/_template/) for what a submission carries.
+[`submissions/pge-e-elec/`](submissions/pge-e-elec/) is a complete worked example — PG&E Schedule E-ELEC, with its tariff PDF vendored and its prices filled in:
+
+```
+submissions/pge-e-elec/
+  README.md
+  data/
+    urpx-rate-plan_pge_e-elec.jsonld
+  assets/
+    PGE_E-ELEC_2026-01-01.pdf
+```
+
+The template at [`submissions/_template/`](submissions/_template/) is the same shape as a minimal, already-valid dataset you copy and edit. See [`submissions/README.md`](submissions/README.md) for what each file carries and the step-by-step process.
 
 ## How to submit
 
-Open a pull request that adds your dataset in its own directory under `submissions/`, using the [pull request template](.github/PULL_REQUEST_TEMPLATE.md). A submission vendors its source document (includes a copy) rather than only linking to it, and declares the URPX version it targets.
+Copy the template to a directory of your own, swap in your data, and open a pull request:
 
-Gate 1 runs automatically on every pull request: SHACL validation against the shapes of the URPX version the submission declares, plus summary queries that record the submission in the [catalog index](catalog/README.md). A submission that fails gate 1 does not merge.
+```
+cp -r submissions/_template submissions/<your-submission-name>
+```
+
+A submission carries its dataset as URPX JSON-LD, vendors its source document (includes a copy rather than only a link), and declares the URPX version it targets. Validate it locally first, then open a pull request with the [pull request template](.github/PULL_REQUEST_TEMPLATE.md):
+
+```
+pip install -r scripts/requirements.txt
+python3 scripts/validate_submission.py submissions/
+```
+
+[`submissions/README.md`](submissions/README.md) gives the full steps, including a reproducible way to draft the JSON-LD from a tariff, by hand or with a language model.
+
+Gate 1 runs automatically on every pull request: SHACL validation against the shapes of the URPX version the submission declares. A submission that fails gate 1 does not merge. The [catalog index](catalog/README.md) is regenerated from the submitted metadata after a submission merges; you do not edit it or add your submission to it yourself.
 
 ## Graduating to the standard
 
